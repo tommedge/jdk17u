@@ -171,6 +171,7 @@
   LOG_TAG(stats) \
   LOG_TAG(streaming) \
   LOG_TAG(stringdedup) \
+  LOG_TAG(stringdedupdump) \
   LOG_TAG(stringtable) \
   LOG_TAG(subclass) \
   LOG_TAG(survivor) \

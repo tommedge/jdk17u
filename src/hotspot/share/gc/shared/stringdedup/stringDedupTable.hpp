@@ -144,6 +144,7 @@ public:
 
   static void verify();
   static void log_statistics();
+  static void log_data();
 };
 
 #endif // SHARE_GC_SHARED_STRINGDEDUP_STRINGDEDUPTABLE_HPP

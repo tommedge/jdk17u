@@ -22,6 +22,8 @@
  *
  */
 
+#include <utilities/utf8.hpp>
+#include <classfile/compactHashtable.hpp>
 #include "precompiled.hpp"
 #include "classfile/altHashing.hpp"
 #include "classfile/javaClasses.inline.hpp"
@@ -114,6 +116,7 @@ public:
     expand_if_full();
     _hashes.push(hash_code);
     _values.push(value);
+
   }
 
   void delete_at(int index) {
@@ -753,6 +756,30 @@ void StringDedup::Table::verify() {
   }
 }
 
+void print_byte_array(typeArrayOop ta, int print_len, outputStream* st) {
+  for (int index = 0; index < print_len && index <= 100; index++) {
+    jbyte c = ta->byte_at(index);
+    st->print("%c", isprint(c) ? c : ' ');
+  }
+  st->print_cr("");
+}
+
+void StringDedup::Table::log_data() {
+  LogStreamHandle(Trace, stringdedupdump) log;
+  for (size_t i = 0; i < _number_of_buckets; ++i) {
+    Bucket &bucket = _buckets[i];
+    int length = bucket.length();
+    for (int j = 0; j < length; ++j) {
+      auto handle = bucket.values().at(j);
+      oop pDesc = handle.resolve();
+      if (pDesc != NULL) {
+        auto ta = typeArrayOop(pDesc);
+        print_byte_array(ta, ta->length(), &log);
+      }
+    }
+  }
+}
+
 void StringDedup::Table::log_statistics() {
   size_t dead_count;
   int dead_state;
@@ -764,7 +791,7 @@ void StringDedup::Table::log_statistics() {
   log_debug(stringdedup)("Table: %zu values in %zu buckets, %zu dead (%d)",
                          _number_of_entries, _number_of_buckets,
                          dead_count, dead_state);
-  LogStreamHandle(Trace, stringdedup) log;
+  LogStreamHandle(Trace, stringdedupdump) log;
   if (log.is_enabled()) {
     ResourceMark rm;
     GrowableArray<size_t> counts;
@@ -782,3 +809,5 @@ void StringDedup::Table::log_statistics() {
     }
   }
 }
+
+
