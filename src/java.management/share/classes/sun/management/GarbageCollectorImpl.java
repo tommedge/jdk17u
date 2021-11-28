@@ -49,9 +49,6 @@ public class GarbageCollectorImpl extends MemoryManagerImpl
     public native long getCollectionTime();
 
     @Override
-    public native String dumpStrings();
-
-    @Override
     public ObjectName getObjectName() {
         return Util.newObjectName(ManagementFactory.GARBAGE_COLLECTOR_MXBEAN_DOMAIN_TYPE, getName());
     }

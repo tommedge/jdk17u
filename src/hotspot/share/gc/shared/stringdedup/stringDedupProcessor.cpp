@@ -223,8 +223,5 @@ void StringDedup::Processor::log_statistics() {
     _total_stat.log_statistics(true);
     Table::log_statistics();
   }
-  if (log_is_enabled(Trace, stringdedupdump)) {
-//    Table::log_data();
-  }
   _cur_stat = Stat{};
 }

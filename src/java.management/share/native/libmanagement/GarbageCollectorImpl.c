@@ -36,9 +36,3 @@ JNIEXPORT jlong JNICALL Java_sun_management_GarbageCollectorImpl_getCollectionTi
   (JNIEnv *env, jobject mgr) {
   return jmm_interface->GetLongAttribute(env, mgr, JMM_GC_TIME_MS);
 }
-
-  JNIEXPORT jstring JNICALL Java_sun_management_GarbageCollectorImpl_dumpStrings
-          (JNIEnv *env, jobject mgr) {
-    jstring version_string = (*env)->NewStringUTF(env, "hi from jvm");
-    return version_string;
-  }
