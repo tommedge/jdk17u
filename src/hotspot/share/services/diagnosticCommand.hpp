@@ -25,6 +25,7 @@
 #ifndef SHARE_SERVICES_DIAGNOSTICCOMMAND_HPP
 #define SHARE_SERVICES_DIAGNOSTICCOMMAND_HPP
 
+#include "gc/shared/stringdedup/stringDedupTable.hpp"
 #include "classfile/stringTable.hpp"
 #include "classfile/symbolTable.hpp"
 #include "classfile/systemDictionary.hpp"
@@ -765,7 +766,8 @@ public:
   enum {
     DumpSymbols = 1 << 0,
     DumpStrings = 1 << 1,
-    DumpSysDict = 1 << 2  // not implemented yet
+    DumpSysDict = 1 << 2,  // not implemented yet.
+    DumpStringDedupe = 1 << 3
   };
   VM_DumpHashtable(outputStream* out, int which, bool verbose) {
     _out = out;
@@ -785,6 +787,9 @@ public:
       break;
     case DumpSysDict:
       SystemDictionary::dump(_out, _verbose);
+      break;
+    case DumpStringDedupe:
+      StringDedup::dump(_out);
       break;
     default:
       ShouldNotReachHere();
@@ -812,6 +817,28 @@ public:
     return p;
   }
   virtual void execute(DCmdSource source, TRAPS);
+};
+
+class StringDedupeDCmd : public DCmdWithParser {
+protected:
+    DCmdArgument<bool> _verbose;
+public:
+    StringDedupeDCmd(outputStream* output, bool heap);
+    static const char* name() {
+      return "VM.stringdedupe";
+    }
+    static const char* description() {
+      return "Dump string dedupe table.";
+    }
+    static const char* impact() {
+      return "Medium: Depends on Java content.";
+    }
+    static const JavaPermission permission() {
+      JavaPermission p = {"java.lang.management.ManagementPermission",
+                          "monitor", NULL};
+      return p;
+    }
+    virtual void execute(DCmdSource source, TRAPS);
 };
 
 class StringtableDCmd : public DCmdWithParser {

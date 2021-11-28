@@ -764,8 +764,8 @@ void print_byte_array(typeArrayOop ta, int print_len, outputStream* st) {
   st->print_cr("");
 }
 
-void StringDedup::Table::log_data() {
-  LogStreamHandle(Trace, stringdedupdump) log;
+void StringDedup::Table::log_data(outputStream* st) {
+//  LogStreamHandle(Trace, stringdedupdump) log;
   for (size_t i = 0; i < _number_of_buckets; ++i) {
     Bucket &bucket = _buckets[i];
     int length = bucket.length();
@@ -774,7 +774,7 @@ void StringDedup::Table::log_data() {
       oop pDesc = handle.resolve();
       if (pDesc != NULL) {
         auto ta = typeArrayOop(pDesc);
-        print_byte_array(ta, ta->length(), &log);
+        print_byte_array(ta, ta->length(), st);
       }
     }
   }

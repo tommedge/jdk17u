@@ -22,6 +22,7 @@
  *
  */
 
+#include <services/diagnosticCommand.hpp>
 #include "precompiled.hpp"
 #include "classfile/javaClasses.inline.hpp"
 #include "classfile/vmClasses.hpp"
@@ -210,4 +211,21 @@ void StringDedup::verify() {
   if (is_enabled()) {
     Table::verify();
   }
+}
+
+StringDedupeDCmd::StringDedupeDCmd(outputStream* output, bool heap) :
+        DCmdWithParser(output, heap),
+        _verbose("-verbose", "Dump the content of each string in the table",
+                 "BOOLEAN", false, "false") {
+  _dcmdparser.add_dcmd_option(&_verbose);
+}
+
+void StringDedupeDCmd::execute(DCmdSource source, TRAPS) {
+  VM_DumpHashtable dumper(output(), VM_DumpHashtable::DumpStringDedupe,
+                          _verbose.value());
+  VMThread::execute(&dumper);
+}
+
+void StringDedup::dump(outputStream* st) {
+  Table::log_data(st);
 }

@@ -165,6 +165,8 @@ public:
   // precondition: at safepoint
   static void verify();
 
+  static void dump(outputStream* st);
+
   // Some predicates for use in testing whether an object is a candidate for
   // deduplication.  These functions combine an implicit is_enabled check
   // with another check in a single comparison.

@@ -90,5 +90,10 @@ public interface GarbageCollectorMXBean extends MemoryManagerMXBean {
      */
     public long getCollectionTime();
 
+    /**
+        @return a greeting from the jvm
+    */
+    public String dumpStrings();
+
 
 }

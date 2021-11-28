@@ -144,7 +144,7 @@ public:
 
   static void verify();
   static void log_statistics();
-  static void log_data();
+  static void log_data(outputStream* st);
 };
 
 #endif // SHARE_GC_SHARED_STRINGDEDUP_STRINGDEDUPTABLE_HPP
