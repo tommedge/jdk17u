@@ -32,6 +32,7 @@
 #include "oops/weakHandle.hpp"
 #include "utilities/globalDefinitions.hpp"
 #include "utilities/macros.hpp"
+#include "utilities/ostream.hpp"
 
 class OopStorage;
 

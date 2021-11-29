@@ -116,7 +116,6 @@ public:
     expand_if_full();
     _hashes.push(hash_code);
     _values.push(value);
-
   }
 
   void delete_at(int index) {
@@ -765,7 +764,6 @@ void print_byte_array(typeArrayOop ta, int print_len, outputStream* st) {
 }
 
 void StringDedup::Table::log_data(outputStream* st) {
-//  LogStreamHandle(Trace, stringdedupdump) log;
   for (size_t i = 0; i < _number_of_buckets; ++i) {
     Bucket &bucket = _buckets[i];
     int length = bucket.length();
@@ -791,7 +789,7 @@ void StringDedup::Table::log_statistics() {
   log_debug(stringdedup)("Table: %zu values in %zu buckets, %zu dead (%d)",
                          _number_of_entries, _number_of_buckets,
                          dead_count, dead_state);
-  LogStreamHandle(Trace, stringdedupdump) log;
+  LogStreamHandle(Trace, stringdedup) log;
   if (log.is_enabled()) {
     ResourceMark rm;
     GrowableArray<size_t> counts;
@@ -809,5 +807,3 @@ void StringDedup::Table::log_statistics() {
     }
   }
 }
-
-
